@@ -1,0 +1,442 @@
+@import "./variables";
+@import "./mixins&anims";
+
+html {
+    box-sizing: border-box;
+}
+
+body {
+    box-sizing: inherit;
+    margin: 0;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+.landing {
+    min-height: 100vh;
+    background: radial-gradient($mainBg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.header {
+    height: 7rem;
+    padding: .6rem;
+    border: .25rem solid $outline;
+    border-radius: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: Min(44rem, 100%);
+    margin: 0 auto;
+    z-index: 99;
+
+    @include media-query(tablet) {
+        height: 9rem;
+        padding: 1rem;
+    }
+
+    &__logo-img {
+        display: block;
+        width: 60%;
+        padding-left: 1rem;
+
+        @include media-query(tablet) {
+            width: 100%;
+        }
+    }
+}
+
+.score-board {
+    background-color: $white;
+    text-align: center;
+    width: 6.25rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: .5rem;
+    cursor: default;
+
+    @include media-query(tablet) {
+        width: 8.125rem;
+    }
+
+    &__text {
+        margin: 0;
+        color: $scoreText;
+        font-family: $font-family;
+        font-size: .8rem;
+        letter-spacing: .125rem;
+    }
+
+    &__score {
+        margin: 0;
+        color: $bodyText;
+        font-family: $font-family;
+        font-size: 3rem;
+        line-height: 100%;
+
+        @include media-query(tablet) {
+            font-size: 4rem;
+        }
+    }
+}
+
+.main {
+    &__selection {
+        display: grid;
+        grid-template-areas: 
+        "paper scissors"
+        "rock rock";
+        grid-template-rows: 9.375rem 9.375rem;
+        background: url("/images/bg-triangle.svg") center center no-repeat;
+        background-size: 70%;
+        width: Min(21.75rem, 100%);
+        margin: 3rem auto;
+
+        &--inactive {
+            display: none;
+        }
+
+        @include media-query(tablet) {
+            width: 24rem;
+            grid-template-rows: 11rem 11rem;
+        }
+    }
+
+    &__in-game {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto 5rem;
+        align-items: center;
+        justify-items: center;
+        width: Min(44rem, 100%);
+        margin: 0 auto;
+
+        &--inactive {
+            display: none;
+        }
+
+        @include media-query(tablet) {
+            grid-template-rows: 5rem auto;
+        }
+    }
+
+    &__result {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto 5rem 10rem;
+        align-items: center;
+        justify-items: center;
+        width: Min(55rem, 100%);
+        margin: 3rem auto;
+
+        &--inactive {
+            display: none;
+        }
+
+        @include media-query(tablet) {
+            grid-template-rows: 5rem auto 13rem;
+        }
+
+        @include media-query(desktop) {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 5rem auto;
+        }
+    }
+}
+
+.selection {
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+    $self: &;
+
+    &--paper {
+        grid-area: paper;
+        justify-self: start;
+
+        #{ $self }__container {
+            background: linear-gradient($paperBg);
+            box-shadow: 0 0.3125rem 0 0 $paperShadow;
+        }
+        
+        &#{ $self }--picked {
+            #{ $self }__container {
+                @include media-query(tablet) {
+                    box-shadow: 0 .6rem 0 0 $paperShadow;
+                }
+            }
+        }
+    }
+
+    &--scissors {
+        grid-area: scissors;
+        justify-self: end;
+
+        #{ $self }__container {
+            background: linear-gradient($scissorsBg);
+            box-shadow: 0 0.3125rem 0 0 $scissorsShadow;
+        }
+
+        &#{ $self }--picked {
+            #{ $self }__container {
+                @include media-query(tablet) {
+                    box-shadow: 0 .6rem 0 0 $scissorsShadow;
+                }
+            }
+        }
+    }
+
+    &--rock {
+        grid-area: rock;
+        justify-self: center;
+
+        #{ $self }__container {
+            background: linear-gradient($rockBg);
+            box-shadow: 0 0.3125rem 0 0 $rockShadow;
+        }
+
+        &#{ $self }--picked {
+            #{ $self }__container {
+                @include media-query(tablet) {
+                    box-shadow: 0 .6rem 0 0 $rockShadow;
+                }
+            }
+        }
+    }
+
+    &--picked {
+        #{ $self }__container {
+            @include media-query(tablet) {
+                padding: 1.8rem;
+            }
+        }
+
+        #{ $self }__icon {
+            @include media-query(tablet) {
+                width: 10rem;
+                height: 10rem;
+                box-shadow: inset 0 .6rem 0 0 $selectionShadow;
+            }
+        }
+
+        #{ $self }__svg {
+            @include media-query(tablet) {
+                transform: scale(1.5);
+            }
+        }
+    }
+
+    &__container {
+        padding: 1rem;
+        border-radius: 50%;
+    }
+
+    &__icon {
+        width: 6rem;
+        height: 6rem;
+        background-color: $grayishWhite;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: inset 0 .3125rem 0 0 $selectionShadow;
+
+        @include media-query(tablet) {
+            width: 8rem;
+            height: 8rem;
+        }
+    }
+}
+
+.pick {
+    text-align: center;
+    position: relative;
+    animation: scaleUp .2s linear;
+
+    &[data-winner="true"] {
+        &::before {
+            content: "";
+            background: radial-gradient(#2c3e5a 0% 40%, hsla(218, 36%, 25%, 0.781) 40% 60%, hsla(218, 43%, 24%, 0.473) 60%);
+            width: 20rem;
+            height: 20rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        @include media-query(tablet) {
+            &::before {
+                width: 37.5rem;
+                height: 37.5rem;
+            }
+        }
+    }
+
+    &__placeholder {
+        width: 6.25rem;
+        height: 6.25rem;
+        background: $pickPlaceholder;
+        border-radius: 50%;
+        animation: scaleUp .8s ease infinite;
+
+        @include media-query(tablet) {
+            width: 11.25rem;
+            height: 11.25rem;
+        }
+    }
+
+    &__text {
+        margin: 0;
+        font-family: $font-family;
+        color: $white;
+        letter-spacing: .125rem;
+        position: relative;
+        cursor: default;
+
+        @include media-query(tablet) {
+            grid-row: 1;
+        }
+    }
+}
+
+.result {
+    text-align: center;
+    grid-column: span 2;
+    z-index: 1;
+
+    @include media-query(desktop) {
+        grid-column: 2;
+        grid-row: 1/3;
+    }
+
+    &__text {
+        font-family: $font-family;
+        font-size: 3rem;
+        color: $white;
+        margin: 0 0 .5rem;
+        cursor: default;
+    }
+}
+
+.rules {
+    $self: &;
+    align-self: center;
+    margin-bottom: 2rem;
+
+    @include media-query(tablet) {
+        align-self: flex-end;
+        margin-bottom: 0;
+    }
+    
+    &__modal {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: $white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        z-index: 999;
+        display: none;
+
+        &--active {
+            display: flex;
+            animation: fadeIn .2s linear;
+        }
+
+        @include media-query(tablet) {
+            width: 25rem;
+            height: 25rem;
+            top: 50%;
+            right: 50%;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: .5rem;
+            padding: 2rem;
+            justify-content: space-between;
+        }
+    }
+
+    &__text {
+        font-family: $font-family;
+        color: $bodyText;
+        margin: 0;
+
+        @include media-query(tablet) {
+            align-self: flex-start;
+        }
+    }
+
+    &__close {
+        cursor: pointer;
+
+        @include media-query(tablet) {
+            position: absolute;
+            top: 2.6rem;
+            right: 2rem;
+            z-index: 1;
+        }
+    }
+}
+
+.button {
+    outline: none;
+    border: none;
+    border-radius: .5rem;
+    font-family: $font-family;
+    text-transform: uppercase;
+    letter-spacing: .125rem;
+    cursor: pointer;
+
+    &--rules {
+        background: transparent;
+        border: .1875rem solid $outline;
+        color: $white;
+        padding: .5rem 2rem;
+    }
+
+    &--play {
+        color: $bodyText;
+        padding: 1rem 2rem;
+        width: 100%;
+        background: $white;
+
+        &:hover {
+            color: hsl(349, 71%, 52%);
+        }
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: $overlay;
+    z-index: 100;
+    animation: fadeIn .2s ease;
+}
+
+.attribution {
+    font-family: sans-serif;
+    font-size: 11px;
+    text-align: center;
+    padding: 1rem;
+
+    a { color: hsl(228, 45%, 44%); }
+}
