@@ -18,10 +18,8 @@ body {
     min-height: 100vh;
     background: radial-gradient($mainBg);
     padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     overflow: hidden;
+    @include flexbox(column, space-between);
 }
 
 .header {
@@ -29,12 +27,11 @@ body {
     padding: .6rem;
     border: .25rem solid $outline;
     border-radius: .5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     width: Min(44rem, 100%);
     margin: 0 auto;
     z-index: 99;
+    @include flexbox(row, space-between);
+    align-items: center;
 
     @include media-query(tablet) {
         height: 9rem;
@@ -57,28 +54,22 @@ body {
     text-align: center;
     width: 6.25rem;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     border-radius: .5rem;
     cursor: default;
+    @include flexbox(column, center);
 
     @include media-query(tablet) {
         width: 8.125rem;
     }
 
     &__text {
-        margin: 0;
-        color: $scoreText;
-        font-family: $font-family;
+        @include text($scoreText);
         font-size: .8rem;
         letter-spacing: .125rem;
     }
 
     &__score {
-        margin: 0;
-        color: $bodyText;
-        font-family: $font-family;
+        @include text($bodyText);
         font-size: 3rem;
         line-height: 100%;
 
@@ -100,10 +91,6 @@ body {
         width: Min(21.75rem, 100%);
         margin: 3rem auto;
 
-        &--inactive {
-            display: none;
-        }
-
         @include media-query(tablet) {
             width: 24rem;
             grid-template-rows: 11rem 11rem;
@@ -119,10 +106,6 @@ body {
         width: Min(44rem, 100%);
         margin: 0 auto;
 
-        &--inactive {
-            display: none;
-        }
-
         @include media-query(tablet) {
             grid-template-rows: 5rem auto;
         }
@@ -136,10 +119,6 @@ body {
         justify-items: center;
         width: Min(55rem, 100%);
         margin: 3rem auto;
-
-        &--inactive {
-            display: none;
-        }
 
         @include media-query(tablet) {
             grid-template-rows: 5rem auto 13rem;
@@ -244,10 +223,9 @@ body {
         height: 6rem;
         background-color: $grayishWhite;
         border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         box-shadow: inset 0 .3125rem 0 0 $selectionShadow;
+        @include flexbox(row, center);
+        align-items: center;
 
         @include media-query(tablet) {
             width: 8rem;
@@ -272,6 +250,7 @@ body {
             left: 50%;
             transform: translate(-50%, -50%);
             border-radius: 50%;
+            animation: fadeInOut 1s linear infinite;
         }
 
         @include media-query(tablet) {
@@ -296,9 +275,7 @@ body {
     }
 
     &__text {
-        margin: 0;
-        font-family: $font-family;
-        color: $white;
+        @include text($white);
         letter-spacing: .125rem;
         position: relative;
         cursor: default;
@@ -320,9 +297,8 @@ body {
     }
 
     &__text {
-        font-family: $font-family;
+        @include text($white);
         font-size: 3rem;
-        color: $white;
         margin: 0 0 .5rem;
         cursor: default;
     }
@@ -345,11 +321,9 @@ body {
         bottom: 0;
         left: 0;
         background-color: $white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
         z-index: 999;
+        @include flexbox(column, space-around);
+        align-items: center;
         display: none;
 
         &--active {
@@ -361,8 +335,6 @@ body {
             width: 25rem;
             height: 25rem;
             top: 50%;
-            right: 50%;
-            bottom: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             border-radius: .5rem;
@@ -372,9 +344,7 @@ body {
     }
 
     &__text {
-        font-family: $font-family;
-        color: $bodyText;
-        margin: 0;
+        @include text($bodyText);
 
         @include media-query(tablet) {
             align-self: flex-start;
@@ -398,6 +368,7 @@ body {
     border: none;
     border-radius: .5rem;
     font-family: $font-family;
+    font-size: .9rem;
     text-transform: uppercase;
     letter-spacing: .125rem;
     cursor: pointer;
